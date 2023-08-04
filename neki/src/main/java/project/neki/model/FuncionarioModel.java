@@ -17,13 +17,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = UserModel.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = FuncionarioModel.class)
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "userModel")
-public class UserModel {
+@Table(name = "funcionario")
+public class FuncionarioModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +42,7 @@ public class UserModel {
 	@ManyToMany
 	private List<SkillModel> skillList;
 
-	public UserModel(String name, String login, String password, List<SkillModel> skillList) {
+	public FuncionarioModel(String name, String login, String password, List<SkillModel> skillList) {
 		this.name = name;
 		this.login = login;
 		this.password = password;

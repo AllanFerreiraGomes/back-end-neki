@@ -32,6 +32,6 @@ public class SkillModel {
 	private String name;
 
 	@ManyToMany(mappedBy = "skillList")
-	private List<UserModel> users;
+	private List<FuncionarioModel> users;
 
 }
