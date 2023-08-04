@@ -3,12 +3,15 @@ package project.neki.services;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import exceptions.UnmatchingIdsException;
+import project.neki.dtos.SkillInfoDTO;
 import project.neki.model.FuncionarioModel;
 import project.neki.repository.FuncionarioRepository;
 
@@ -63,4 +66,14 @@ public class FuncionarioService {
 		FuncionarioModel usuario = optUsuario.get();
 		return enconder.matches(password, usuario.getPassword());
 	}
+
+	  @Transactional(readOnly = true)
+	    public List<SkillInfoDTO> listarSkillsFuncionario(Long id) {
+	        FuncionarioModel funcionario = funcionarioRepository.findById(id)
+	                .orElseThrow(() -> new NoSuchElementException("Id: [" + id + "] do funcionario não valido"));
+
+	        return funcionario.getSkillList().stream()
+	                .map(skill -> new SkillInfoDTO(skill.getId(), skill.getName(), skill.getLevel()))
+	                .collect(Collectors.toList());
+	    }
 }

@@ -31,6 +31,9 @@ public class SkillModel {
 	@Column(name = "name")
 	private String name;
 
+	@Column(name = "level")
+	private Integer level;
+	
 	@ManyToMany(mappedBy = "skillList")
 	private List<FuncionarioModel> users;
 
