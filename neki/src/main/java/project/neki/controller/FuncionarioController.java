@@ -78,20 +78,5 @@ public class FuncionarioController {
 		return ResponseEntity.status(status).body(valid);
 	}
 
-	@GetMapping("/dto/{id}")
-	public ResponseEntity<List<SkillInfoDTO>> listarSkillsFuncionario(@PathVariable Long id) {
-		List<SkillInfoDTO> skillInfoList = funcionarioService.listarSkillsFuncionario(id);
-		return new ResponseEntity<>(skillInfoList, HttpStatus.OK);
-	}
-
-	@PostMapping("/{funcionarioId}/skills")
-	public ResponseEntity<Void> associarSkillsAoFuncionario(@PathVariable Long funcionarioId,
-	        @RequestBody AssociarSkillsDTO associarSkillsDTO) {
-
-	    funcionarioService.associarSkillsAoFuncionario(funcionarioId,
-	            associarSkillsDTO.getSkillIds(), associarSkillsDTO.getLevel());
-
-	    return new ResponseEntity<>(HttpStatus.CREATED);
-	}
 }
 
