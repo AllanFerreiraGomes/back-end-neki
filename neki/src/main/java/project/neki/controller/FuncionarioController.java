@@ -1,6 +1,7 @@
 package project.neki.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import project.neki.dtos.AssociarSkillsDTO;
 import project.neki.dtos.SkillInfoDTO;
 import project.neki.model.FuncionarioModel;
 import project.neki.services.FuncionarioService;
@@ -66,9 +68,30 @@ public class FuncionarioController {
 //		}
 //	}
 
-	 @GetMapping("/dto/{id}")
-	   public ResponseEntity<List<SkillInfoDTO>> listarSkillsFuncionario(@PathVariable Long id) {
-	        List<SkillInfoDTO> skillInfoList = funcionarioService.listarSkillsFuncionario(id);
-	        return new ResponseEntity<>(skillInfoList, HttpStatus.OK);
-	    }
+	@PostMapping("/validarSenha")
+	public ResponseEntity<Boolean> validarSenha(@RequestBody Map<String, String> requestBody) {
+		String login = requestBody.get("login");
+		String password = requestBody.get("password");
+
+		boolean valid = funcionarioService.validarSenha(login, password);
+		HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+		return ResponseEntity.status(status).body(valid);
+	}
+
+	@GetMapping("/dto/{id}")
+	public ResponseEntity<List<SkillInfoDTO>> listarSkillsFuncionario(@PathVariable Long id) {
+		List<SkillInfoDTO> skillInfoList = funcionarioService.listarSkillsFuncionario(id);
+		return new ResponseEntity<>(skillInfoList, HttpStatus.OK);
+	}
+
+	@PostMapping("/{funcionarioId}/skills")
+	public ResponseEntity<Void> associarSkillsAoFuncionario(@PathVariable Long funcionarioId,
+	        @RequestBody AssociarSkillsDTO associarSkillsDTO) {
+
+	    funcionarioService.associarSkillsAoFuncionario(funcionarioId,
+	            associarSkillsDTO.getSkillIds(), associarSkillsDTO.getLevel());
+
+	    return new ResponseEntity<>(HttpStatus.CREATED);
+	}
 }
+

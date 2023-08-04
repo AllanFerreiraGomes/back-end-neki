@@ -35,6 +35,6 @@ public class SkillModel {
 	private Integer level;
 	
 	@ManyToMany(mappedBy = "skillList")
-	private List<FuncionarioModel> users;
+	private List<FuncionarioModel> funcionariosLista;
 
 }

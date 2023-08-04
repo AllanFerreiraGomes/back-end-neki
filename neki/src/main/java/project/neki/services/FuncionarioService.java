@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import exceptions.UnmatchingIdsException;
 import project.neki.dtos.SkillInfoDTO;
 import project.neki.model.FuncionarioModel;
+import project.neki.model.SkillModel;
 import project.neki.repository.FuncionarioRepository;
+import project.neki.repository.SkillRepository;
 
 @Service
 public class FuncionarioService {
@@ -23,6 +25,9 @@ public class FuncionarioService {
 
 	@Autowired
 	PasswordEncoder enconder;
+
+	@Autowired
+	SkillRepository skillRepository;
 
 	public FuncionarioService(FuncionarioRepository funcionarioRepository, PasswordEncoder enconder) {
 		this.funcionarioRepository = funcionarioRepository;
@@ -34,7 +39,8 @@ public class FuncionarioService {
 	}
 
 	public FuncionarioModel getFuncionarioModelById(Long id) {
-		return funcionarioRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Id de funcionario Invalido " + id));
+		return funcionarioRepository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Id de funcionario Invalido " + id));
 	}
 
 	public FuncionarioModel saveFuncionarioModel(FuncionarioModel FuncionarioModel) {
@@ -67,13 +73,30 @@ public class FuncionarioService {
 		return enconder.matches(password, usuario.getPassword());
 	}
 
-	  @Transactional(readOnly = true)
-	    public List<SkillInfoDTO> listarSkillsFuncionario(Long id) {
-	        FuncionarioModel funcionario = funcionarioRepository.findById(id)
-	                .orElseThrow(() -> new NoSuchElementException("Id: [" + id + "] do funcionario não valido"));
+	@Transactional(readOnly = true)
+	public List<SkillInfoDTO> listarSkillsFuncionario(Long id) {
+		FuncionarioModel funcionario = funcionarioRepository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Id: [" + id + "] do funcionario não valido"));
 
-	        return funcionario.getSkillList().stream()
-	                .map(skill -> new SkillInfoDTO(skill.getId(), skill.getName(), skill.getLevel()))
-	                .collect(Collectors.toList());
+		return funcionario.getSkillList().stream()
+				.map(skill -> new SkillInfoDTO(skill.getId(), skill.getName(), skill.getLevel()))
+				.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public void associarSkillsAoFuncionario(Long funcionarioId, List<Long> skillIds, Integer level) {
+	    FuncionarioModel funcionario = funcionarioRepository.findById(funcionarioId)
+	            .orElseThrow(() -> new NoSuchElementException("Id do funcionario não valido"));
+
+	    List<SkillModel> skills = skillRepository.findAllById(skillIds);
+
+	    for (SkillModel skill : skills) {
+	        funcionario.getSkillList().add(skill);
+	        skill.getFuncionariosLista().add(funcionario);
+	        skill.setLevel(level);
 	    }
+
+	    funcionarioRepository.save(funcionario);
+	}
+
 }
