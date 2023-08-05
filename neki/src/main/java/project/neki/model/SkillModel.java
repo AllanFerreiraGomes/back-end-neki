@@ -3,6 +3,9 @@ package project.neki.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,11 +15,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.Setter;
 
 @Entity
 @Data
 @Table(name = "skill")
+@JsonIgnoreProperties("funcionarioSkills")
 public class SkillModel {
 
     @Id
@@ -31,6 +34,9 @@ public class SkillModel {
     private String name;
 
     @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<FuncionarioSkill> funcionarioSkills = new ArrayList<>();
+    
+
 }
 			

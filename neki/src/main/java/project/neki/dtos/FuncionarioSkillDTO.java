@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SkillInfoDTO {
-	private Long id;
-	private String name;
+public class FuncionarioSkillDTO {
+
+	private Long skillId;
 	private Long level;
 
 }

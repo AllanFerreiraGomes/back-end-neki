@@ -10,47 +10,48 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import project.neki.dtos.FuncionarioSkillDTO;
+import project.neki.dtos.FuncionarioSkillListDTO;
+import project.neki.dtos.SkillIdDTO;
 import project.neki.dtos.SkillInfoDTO;
 import project.neki.services.FuncionarioSkillService;
 
 @RestController
-@RequestMapping("/api/funcionarios/{funcionarioId}/skills")
+@RequestMapping("/funcionarios/{funcionarioId}/skills")
 public class FuncionarioSkillController {
-
+	
 	@Autowired
-	FuncionarioSkillService funcionarioSkillService;
+	 FuncionarioSkillService funcionarioSkillService;
+	
 
-	@Autowired
-	public FuncionarioSkillController(FuncionarioSkillService funcionarioSkillService) {
-		this.funcionarioSkillService = funcionarioSkillService;
-	}
-
-	@PostMapping("/{skillId}")
-	public ResponseEntity<Void> associarSkillAoFuncionario(@PathVariable Long funcionarioId, @PathVariable Long skillId,
-			@RequestParam Integer level) {
-		funcionarioSkillService.associarSkillAoFuncionario(funcionarioId, skillId, level);
+	@PostMapping("/associar-skills")
+	public ResponseEntity<Void> associarSkillsAoFuncionario(@PathVariable Long funcionarioId,
+			@RequestBody FuncionarioSkillListDTO funcionarioSkillListDTO) {
+		funcionarioSkillService.associarSkillFuncionario(funcionarioId, funcionarioSkillListDTO);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
+	
+	
 
-	@PutMapping("/{skillId}")
+	@PutMapping("/atualizar")
 	public ResponseEntity<Void> atualizarNivelSkillDoFuncionario(@PathVariable Long funcionarioId,
-			@PathVariable Long skillId, @RequestParam Integer level) {
-		funcionarioSkillService.atualizarNivelSkillDoFuncionario(funcionarioId, skillId, level);
+			@RequestBody FuncionarioSkillDTO skillDTO) {
+		funcionarioSkillService.atualizarNivelSkillDoFuncionario(funcionarioId, skillDTO);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@DeleteMapping("/{skillId}")
+	@DeleteMapping("/excluir")
 	public ResponseEntity<Void> excluirAssociacaoSkillDoFuncionario(@PathVariable Long funcionarioId,
-			@PathVariable Long skillId) {
-		funcionarioSkillService.excluirAssociacaoSkillDoFuncionario(funcionarioId, skillId);
+			@RequestBody SkillIdDTO skillIdDTO) {
+		funcionarioSkillService.excluirAssociacaoSkillDoFuncionario(funcionarioId, skillIdDTO);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@GetMapping
+	@GetMapping("/listar")
 	public ResponseEntity<List<SkillInfoDTO>> listarSkillsFuncionario(@PathVariable Long funcionarioId) {
 		List<SkillInfoDTO> skills = funcionarioSkillService.listarSkillsFuncionario(funcionarioId);
 		return new ResponseEntity<>(skills, HttpStatus.OK);

@@ -3,6 +3,9 @@ package project.neki.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,6 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "funcionario")
+@JsonIgnoreProperties("funcionarioSkills")
 public class FuncionarioModel {
 
     @Id
@@ -37,8 +41,14 @@ public class FuncionarioModel {
     private String password;
 
     @OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<FuncionarioSkill> funcionarioSkills = new ArrayList<>();
 
+    public boolean hasSkill(Long skillId) {
+        return funcionarioSkills.stream()
+                .anyMatch(funcionarioSkill -> funcionarioSkill.getSkill().getId().equals(skillId));
+    }
+    
     public void addFuncionarioSkill(FuncionarioSkill funcionarioSkill) {
         funcionarioSkills.add(funcionarioSkill);
         funcionarioSkill.setFuncionario(this);
