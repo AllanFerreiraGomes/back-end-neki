@@ -63,15 +63,20 @@ public class FuncionarioService {
 		}
 	}
 
-	public boolean validarSenha(String login, String password) {
+	public FuncionarioModel validarSenha(String login, String password) {
 		Optional<FuncionarioModel> optUsuario = funcionarioRepository.findByLogin(login);
+		System.out.println("Entrei");
 		if (optUsuario.isEmpty()) {
-			return false;
+			return null;
+		}
+		FuncionarioModel usuario = optUsuario.get();
+
+		// 4. Verificar se a senha fornecida corresponde à senha armazenada após a
+		// codificação
+		if (enconder.matches(password, usuario.getPassword())) {
+			return usuario; // Senha correta, retorna o objeto FuncionarioModel
 		}
 
-		FuncionarioModel usuario = optUsuario.get();
-		return enconder.matches(password, usuario.getPassword());
+		return null;
 	}
-
-
 }

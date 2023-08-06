@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import project.neki.dtos.AssociarSkillsDTO;
+import project.neki.dtos.CredenciaisDTO;
 import project.neki.dtos.SkillInfoDTO;
 import project.neki.model.FuncionarioModel;
 import project.neki.services.FuncionarioService;
@@ -38,11 +39,12 @@ public class FuncionarioController {
 
 	@PostMapping
 	public ResponseEntity<FuncionarioModel> saveFuncionarioModel(@RequestBody FuncionarioModel FuncionarioModel) {
+		System.out.println("Entrei Post");
 		FuncionarioModel FuncionarioModelResponse = funcionarioService.saveFuncionarioModel(FuncionarioModel);
 		if (FuncionarioModelResponse == null) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_MODIFIED);
 		} else {
-			return new ResponseEntity<>(FuncionarioModelResponse, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
 
@@ -68,15 +70,16 @@ public class FuncionarioController {
 //		}
 //	}
 
-	@PostMapping("/validarSenha")
-	public ResponseEntity<Boolean> validarSenha(@RequestBody Map<String, String> requestBody) {
-		String login = requestBody.get("login");
-		String password = requestBody.get("password");
+	@PostMapping("/validar-senha")
+	public Object validarSenha(@RequestBody CredenciaisDTO credenciais) {
+		String login = credenciais.getLogin();
+		String senha = credenciais.getPassword();
 
-		boolean valid = funcionarioService.validarSenha(login, password);
-		HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
-		return ResponseEntity.status(status).body(valid);
+		FuncionarioModel funcionario = funcionarioService.validarSenha(login, senha);
+		if (funcionario != null) {
+			return funcionario; // Retorna o objeto FuncionarioModel se as credenciais estiverem corretas
+		} else {
+			return false; // Retorna false se as credenciais estiverem erradas
+		}
 	}
-
 }
-
