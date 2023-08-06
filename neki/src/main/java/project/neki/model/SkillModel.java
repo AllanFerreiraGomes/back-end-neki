@@ -32,7 +32,10 @@ public class SkillModel {
 
     @Column(name = "name")
     private String name;
-
+ 
+    @Column(name = "url_imagem")
+    private String urlImagem;
+    		 
     @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private List<FuncionarioSkill> funcionarioSkills = new ArrayList<>();

@@ -39,12 +39,11 @@ public class FuncionarioController {
 
 	@PostMapping
 	public ResponseEntity<FuncionarioModel> saveFuncionarioModel(@RequestBody FuncionarioModel FuncionarioModel) {
-		System.out.println("Entrei Post");
 		FuncionarioModel FuncionarioModelResponse = funcionarioService.saveFuncionarioModel(FuncionarioModel);
 		if (FuncionarioModelResponse == null) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_MODIFIED);
 		} else {
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(FuncionarioModelResponse, HttpStatus.OK);
 		}
 	}
 
