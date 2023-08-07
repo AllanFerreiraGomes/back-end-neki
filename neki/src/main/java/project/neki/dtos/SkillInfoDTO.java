@@ -11,5 +11,5 @@ public class SkillInfoDTO {
 	private Long id;
 	private String name;
 	private Long level;
-
+    private String urlImagem;
 }

@@ -119,7 +119,7 @@ public class FuncionarioSkillService {
 
 		return funcionario.getFuncionarioSkills().stream()
 				.map(funcionarioSkill -> new SkillInfoDTO(funcionarioSkill.getSkill().getId(),
-						funcionarioSkill.getSkill().getName(), funcionarioSkill.getLevel()))
+						funcionarioSkill.getSkill().getName(), funcionarioSkill.getLevel(), funcionarioSkill.getSkill().getUrlImagem()))
 				.collect(Collectors.toList());
 	}
 
