@@ -38,7 +38,7 @@ import security.services.UserDetailsImpl;
 
 public class AuthController {
 
-    @Autowired(required = true)
+    @Autowired
 	private AuthenticationManager authenticationManager;
 
 	// Não deixe o Controller acessar o repository, faça no Service

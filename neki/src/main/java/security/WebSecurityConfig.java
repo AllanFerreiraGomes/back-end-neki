@@ -45,7 +45,7 @@ public class WebSecurityConfig  {
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //define a politica de sessao
             //Essas linhas que definimos quais rotas serão publicas e quais privadas
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/auth/**").permitAll())
+                .requestMatchers("/auth/**" ,"/roles", "/signin**").permitAll())
             		;		
 		
 		http.authenticationProvider(authenticationProvider()); //define o provedor de autenticacao
