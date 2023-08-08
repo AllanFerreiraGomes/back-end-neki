@@ -5,35 +5,41 @@ import java.util.Set;
 import jakarta.validation.constraints.*;
 
 public class SignupRequestDTO {
-	@NotBlank
-	@Size(min = 3, max = 20)
-	private String username;
+	
+    private Long id;
 
-	@NotBlank
-	@Size(max = 50)
-	@Email
-	private String email;
+	private String name;
 
 	private Set<String> role;
 
-	@NotBlank
-	@Size(min = 6, max = 40)
+    private String login;
+	
 	private String password;
 
-	public String getUsername() {
-		return username;
+	
+	public SignupRequestDTO(Long id, String name, Set<String> role, String login, String password) {
+		
+		this.id = id;
+		this.name = name;
+		this.role = role;
+		this.login = login;
+		this.password = password;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public Long getId() {
+		return id;
 	}
 
-	public String getEmail() {
-		return email;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPassword() {
@@ -42,6 +48,14 @@ public class SignupRequestDTO {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	public Set<String> getRole() {

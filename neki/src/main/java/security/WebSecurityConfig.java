@@ -26,9 +26,9 @@ import security.services.UserDetailsServiceImpl;
 
 
 @Configuration
-@EnableMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 public class WebSecurityConfig {
+	
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
 
@@ -49,7 +49,7 @@ public class WebSecurityConfig {
             		.requestMatchers(HttpMethod.POST, "/produtos/**", "/categorias/**").hasAnyRole("ADM")
                     .requestMatchers(HttpMethod.PUT, "/clientes/**", "/enderecos/**").hasAnyRole("ADM", "USER")
                     .requestMatchers(HttpMethod.PUT, "/pedidos/**", "/itemPedidos/**", "/produtos/**", "/categorias/**").hasAnyRole("ADM")
-                    .requestMatchers(HttpMethod.GET, "/produtos/**", "/categorias/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/skills", "/funcionarios").permitAll()
                     .requestMatchers(HttpMethod.GET, "/enderecos/**", "/pedidos/**", "/itemPedidos/**", "/clientes/**").hasAnyRole("USER", "ADM")
                     .requestMatchers(HttpMethod.DELETE, "/clientes/**", "/pedidos/**", "/itemPedidos/**", "/enderecos/**", "/produtos/**", "/categorias/**").hasAnyRole("ADM")
                     .anyRequest().authenticated()) //demais rotas, nao configuradas acima, so poderao ser acessadas mediante autenticacao

@@ -16,22 +16,19 @@ import project.neki.model.User;
 public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
-	private Integer id;
+	private Long id;
 
 	private String username;
-
-	private String email;
 
 	@JsonIgnore
 	private String password;
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(Integer id, String username, String email, String password,
+	public UserDetailsImpl(Long id, String username, String password,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.username = username;
-		this.email = email;
 		this.password = password;
 		this.authorities = authorities;
 	}
@@ -40,7 +37,7 @@ public class UserDetailsImpl implements UserDetails {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
 
-		return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), authorities);
+		return new UserDetailsImpl(user.getId(), user.getName(), user.getPassword(), authorities);
 	}
 
 	@Override
@@ -48,12 +45,29 @@ public class UserDetailsImpl implements UserDetails {
 		return authorities;
 	}
 
-	public Integer getId() {
+
+	public Long getId() {
 		return id;
 	}
 
-	public String getEmail() {
-		return email;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+		this.authorities = authorities;
 	}
 
 	@Override
