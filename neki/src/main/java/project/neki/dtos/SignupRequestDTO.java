@@ -3,7 +3,13 @@ package project.neki.dtos;
 import java.util.Set;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SignupRequestDTO {
 	
     private Long id;
@@ -16,53 +22,4 @@ public class SignupRequestDTO {
 	
 	private String password;
 
-	
-	public SignupRequestDTO(Long id, String name, Set<String> role, String login, String password) {
-		
-		this.id = id;
-		this.name = name;
-		this.role = role;
-		this.login = login;
-		this.password = password;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public Set<String> getRole() {
-		return this.role;
-	}
-
-	public void setRole(Set<String> role) {
-		this.role = role;
-	}
 }
