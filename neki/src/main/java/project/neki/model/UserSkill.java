@@ -14,15 +14,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "funcionario_skill")
-public class FuncionarioSkill {
+@Table(name = "user_skill")
+public class UserSkill {
 
 	@EmbeddedId
-	private FuncionarioSkillId id = new FuncionarioSkillId();
+	private UserSkillId id = new UserSkillId();
 
 	@ManyToOne
-	@MapsId("funcionarioId")
-	private FuncionarioModel funcionario;
+	@MapsId("userId")
+	private User user;
 
 	@ManyToOne
 	@MapsId("skillId")
@@ -31,9 +31,8 @@ public class FuncionarioSkill {
 	@Column(name = "level")
 	private Long level;
 
-	public FuncionarioSkill(FuncionarioModel funcionario, SkillModel skill, Long level) {
-		super();
-		this.funcionario = funcionario;
+	public UserSkill(User user, SkillModel skill, Long level) {
+		this.user = user;
 		this.skill = skill;
 		this.level = level;
 	}

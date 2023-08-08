@@ -38,7 +38,7 @@ public class SkillModel {
     		 
     @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
-    private List<FuncionarioSkill> funcionarioSkills = new ArrayList<>();
+    private List<UserSkill> funcionarioSkills = new ArrayList<>();
     
 
 }

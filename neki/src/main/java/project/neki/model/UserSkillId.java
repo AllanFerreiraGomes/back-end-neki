@@ -10,10 +10,10 @@ import lombok.Setter;
 @Embeddable
 @Getter
 @Setter
-public class FuncionarioSkillId implements Serializable {
+public class UserSkillId implements Serializable {
 
-    @Column(name = "funcionario_id")
-    private Long funcionarioId;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "skill_id")
     private Long skillId;
