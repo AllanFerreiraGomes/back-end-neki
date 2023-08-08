@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import project.neki.model.Role;
-import project.neki.security.services.RoleService;
+import security.services.RoleService;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)

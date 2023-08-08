@@ -1,20 +1,29 @@
 package project.neki.dtos;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 
 public class LoginRequestDTO {
-	@NotBlank
-	private String username;
 
-	@NotBlank
+	private String login;
+
+	
 	private String password;
 
-	public String getUsername() {
-		return username;
+
+	public String getLogin() {
+		return login;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	public String getPassword() {

@@ -1,8 +1,15 @@
 package project.neki.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -11,83 +18,66 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = "username"),
-		@UniqueConstraint(columnNames = "email") })
+@Data
+@NoArgsConstructor
+
+@Table(name = "users")
+@JsonIgnoreProperties("userSkills")
 public class User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
 
-	@NotBlank(message = "Username não pode ser vazio.")
-	@Size(max = 20)
-	private String username;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-	@NotBlank(message = "Email não pode ser vazio.")
-	@Size(max = 50)
-	@Email
-	private String email;
+    @Column(name = "name")
+    private String name;
 
-	@NotBlank(message = "Senha não pode ser vazia.")
-	@Size(max = 120)
-	private String password;
+    @Column(unique = true)
+    private String login;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+    @Column(name = "password")
+    private String password;
+    
+
+	public User(Long id, String name, String login, String password, Set<Role> set) {
+		this.id = id;
+		this.name = name;
+		this.login = login;
+		this.password = password;
+		this.roles = set;
+	}
+  
+    
+    @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
-	public User() {
-	}
 
-	public User(String username, String email, String password) {
-		this.username = username;
-		this.email = email;
-		this.password = password;
-	}
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<UserSkill> funcionarioSkills = new ArrayList<>();
 
-	public Integer getId() {
-		return id;
-	}
+    public boolean hasSkill(Long skillId) {
+        return funcionarioSkills.stream()
+                .anyMatch(funcionarioSkill -> funcionarioSkill.getSkill().getId().equals(skillId));
+    }
+    
+    public void addUserSkill(UserSkill funcionarioSkill) {
+        funcionarioSkills.add(funcionarioSkill);
+        funcionarioSkill.setUser(this);
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void removeUserSkill(UserSkill funcionarioSkill) {
+        funcionarioSkills.remove(funcionarioSkill);
+        funcionarioSkill.setUser(null);
+    }
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
 }
