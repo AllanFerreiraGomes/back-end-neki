@@ -3,6 +3,7 @@ package project.neki.controller;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import project.neki.dtos.FuncionarioByIdDTO;
 import project.neki.dtos.JwtResponseDTO;
 import project.neki.dtos.LoginRequestDTO;
 import project.neki.dtos.MessageResponseDTO;
@@ -101,4 +105,20 @@ public class AuthController {
 
 		return ResponseEntity.ok(new MessageResponseDTO("Usuário registrado com sucesso!"));
 	}
+
+	 @GetMapping("/get/{id}")
+	    public ResponseEntity<FuncionarioByIdDTO> getById(@PathVariable Long id) {
+	        Optional<User> userOptional = userRepository.findById(id);
+	        if (userOptional.isPresent()) {
+	            User user = userOptional.get();
+	            FuncionarioByIdDTO funcionarioDTO = new FuncionarioByIdDTO();
+	            funcionarioDTO.setId(user.getId());
+	            funcionarioDTO.setName(user.getName());
+	            funcionarioDTO.setLogin(user.getLogin());
+	            return ResponseEntity.ok(funcionarioDTO);
+	        } else {
+	            return ResponseEntity.notFound().build();
+	        }
+	    }
+
 }

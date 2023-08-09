@@ -31,6 +31,7 @@ public class UserService {
 	}
 
 	public List<User> getAllUsers() {
+		System.out.println("Entrei");
 		return userRepository.findAll();
 	}
 

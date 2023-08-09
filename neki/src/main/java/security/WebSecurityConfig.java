@@ -46,10 +46,13 @@ public class WebSecurityConfig  {
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //define a politica de sessao
             //Essas linhas que definimos quais rotas serão publicas e quais privadas
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**" ,"/roles", "/signin**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/skill/**", "/funcionarios/**",  "/funcionarios/*/skills/listar" ).hasAnyRole("ADM", "USER")
+                .requestMatchers("/auth/**" ,"/roles", "/signin**" , "/swagger-ui/**",
+                        "/swagger-resources/*",
+                        "/v3/api-docs/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/skill/**", "/funcionarios/**",  "/funcionarios/*/skills/" ).hasAnyRole("ADM", "USER")
             .requestMatchers(HttpMethod.POST, "/funcionarios/*/skills/associar-skills**","/skill"  ).hasAnyRole("ADM", "USER")
             .requestMatchers(HttpMethod.DELETE, "/funcionarios/*/skills/excluir**" ).hasAnyRole("ADM", "USER")
+            
             .anyRequest().authenticated())
             ;		
 		
@@ -59,17 +62,19 @@ public class WebSecurityConfig  {
 		return http.build();
 	}
 	
-	  @Bean
-	    CorsConfigurationSource corsConfigurationSource() {
-	        CorsConfiguration configuration = new CorsConfiguration();
-	        configuration.setAllowedOrigins(Arrays.asList("*"));
-	        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
-	        configuration.setAllowedHeaders(Arrays.asList("Content-Type")); 
-	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-	        source.registerCorsConfiguration("/**", configuration);
-	        return source;
-	    }
 	
+	  @Bean
+	  CorsConfigurationSource corsConfigurationSource() {
+	      CorsConfiguration configuration = new CorsConfiguration();
+	      configuration.setAllowedOrigins(Arrays.asList("*")); // Permitir origens de qualquer lugar (Isso pode ser ajustado para segurança mais rígida)
+	      configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT" ,"DELETE")); // Permitir métodos HTTP
+	      configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization")); // Permitir cabeçalhos necessários, incluindo Authorization
+	      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	      source.registerCorsConfiguration("/**", configuration);
+	      return source;
+	  }
+
+	  
 	@Bean
 	public AuthTokenFilter authenticationJwtTokenFilter() {
 		return new AuthTokenFilter();

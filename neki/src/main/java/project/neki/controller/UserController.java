@@ -29,6 +29,7 @@ public class UserController {
 
 	@GetMapping
 	public ResponseEntity<List<User>> getAllUsers() {
+		System.out.println("Bati");
 		return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
 	}
 
