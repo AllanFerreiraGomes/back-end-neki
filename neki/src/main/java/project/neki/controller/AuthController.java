@@ -120,5 +120,5 @@ public class AuthController {
 	            return ResponseEntity.notFound().build();
 	        }
 	    }
-	
+
 }
