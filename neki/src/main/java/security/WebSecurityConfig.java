@@ -47,7 +47,7 @@ public class WebSecurityConfig  {
             //Essas linhas que definimos quais rotas serão publicas e quais privadas
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**" ,"/roles", "/signin**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/skill/**", "/funcionarios/**",  "/funcionarios/*/skills/listar" ).hasAnyRole("ADM", "USER")
+            .requestMatchers(HttpMethod.GET, "/skill/**", "/funcionarios/**",  "/funcionarios/*/skills/" ).hasAnyRole("ADM", "USER")
             .requestMatchers(HttpMethod.POST, "/funcionarios/*/skills/associar-skills**","/skill"  ).hasAnyRole("ADM", "USER")
             .requestMatchers(HttpMethod.DELETE, "/funcionarios/*/skills/excluir**" ).hasAnyRole("ADM", "USER")
             .anyRequest().authenticated())

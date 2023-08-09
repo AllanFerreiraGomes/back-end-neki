@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import project.neki.dtos.FuncionarioByIdDTO;
 import project.neki.dtos.FuncionarioSkillDTO;
 import project.neki.dtos.FuncionarioSkillListDTO;
 import project.neki.dtos.SkillIdDTO;
@@ -35,7 +36,6 @@ public class UserSkillService {
 		this.skillRepository = skillRepository;
 	}
 
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Transactional
 	public void associarSkillAoUser(User user, FuncionarioSkillDTO skillDTO) {
@@ -46,36 +46,34 @@ public class UserSkillService {
 		userSkillRepository.save(userSkill);
 	}
 
-
 	public Boolean associarSkillUser(Long userId, FuncionarioSkillListDTO userSkillListDTO) {
-	    User userModel = userRepository.findById(userId)
-	            .orElseThrow(() -> new NoSuchElementException("Id do user não válido"));
+		User userModel = userRepository.findById(userId)
+				.orElseThrow(() -> new NoSuchElementException("Id do user não válido"));
 
-	    System.out.println("NOME DO FUNCIONARIO " + userModel.getName());
+		System.out.println("NOME DO FUNCIONARIO " + userModel.getName());
 
-	    for (Long skillId : userSkillListDTO.getSkillIds()) {
-	        SkillModel skill = skillRepository.findById(skillId)
-	                .orElseThrow(() -> new NoSuchElementException("Id da skill não válido"));
+		for (Long skillId : userSkillListDTO.getSkillIds()) {
+			SkillModel skill = skillRepository.findById(skillId)
+					.orElseThrow(() -> new NoSuchElementException("Id da skill não válido"));
 
-	        System.out.println("NOME DA SKILL " + skillId);
+			System.out.println("NOME DA SKILL " + skillId);
 
-	        // Verifica se a associação já existe
-	        boolean associationExists = userSkillRepository.existsByUserAndSkill(userModel, skill);
-	        if (!associationExists) {
-	            System.out.println("ENTREIII");
-	            UserSkill userSkill = new UserSkill(userModel, skill,
-	                    userSkillListDTO.getLevel());
+			// Verifica se a associação já existe
+			boolean associationExists = userSkillRepository.existsByUserAndSkill(userModel, skill);
+			if (!associationExists) {
+				System.out.println("ENTREIII");
+				UserSkill userSkill = new UserSkill(userModel, skill, userSkillListDTO.getLevel());
 
-	            System.out.println("2");
-	            userSkillRepository.save(userSkill);
+				System.out.println("2");
+				userSkillRepository.save(userSkill);
 
 				System.out.println("3");
-	        }
-	    }
+			}
+		}
 
-	    return true;
+		return true;
 	}
- 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Transactional
@@ -118,10 +116,21 @@ public class UserSkillService {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new NoSuchElementException("Id: [" + userId + "] do user não válido"));
 
-		return user.getFuncionarioSkills().stream()
-				.map(userSkill -> new SkillInfoDTO(userSkill.getSkill().getId(),
+		return user
+				.getFuncionarioSkills().stream().map(userSkill -> new SkillInfoDTO(userSkill.getSkill().getId(),
 						userSkill.getSkill().getName(), userSkill.getLevel(), userSkill.getSkill().getUrlImagem()))
 				.collect(Collectors.toList());
 	}
 
+	public FuncionarioByIdDTO getById(Long userId) {
+		User userModel = userRepository.findById(userId)
+				.orElseThrow(() -> new NoSuchElementException("Id do usuário não válido"));
+
+		FuncionarioByIdDTO dto = new FuncionarioByIdDTO();
+		dto.setId(userModel.getId());
+		dto.setName(userModel.getName());
+		dto.setLogin(userModel.getLogin());
+
+		return dto;
+	}
 }

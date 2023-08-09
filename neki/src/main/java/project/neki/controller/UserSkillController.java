@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import project.neki.dtos.FuncionarioByIdDTO;
 import project.neki.dtos.FuncionarioSkillDTO;
 import project.neki.dtos.FuncionarioSkillListDTO;
 import project.neki.dtos.SkillIdDTO;
@@ -27,6 +28,10 @@ public class UserSkillController {
 	@Autowired
 	 UserSkillService userSkillService;
 	
+	   @GetMapping
+	    public FuncionarioByIdDTO getById(@PathVariable Long id) {
+	        return userSkillService.getById(id);
+	    }
 
 	@PostMapping("/associar-skills")
 	public ResponseEntity<Void> associarSkillsAoUser(@PathVariable Long funcionarioId,
