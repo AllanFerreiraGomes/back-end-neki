@@ -64,7 +64,7 @@ public class WebSecurityConfig  {
 	  CorsConfigurationSource corsConfigurationSource() {
 	      CorsConfiguration configuration = new CorsConfiguration();
 	      configuration.setAllowedOrigins(Arrays.asList("*")); // Permitir origens de qualquer lugar (Isso pode ser ajustado para segurança mais rígida)
-	      configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT")); // Permitir métodos HTTP
+	      configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT" ,"DELETE")); // Permitir métodos HTTP
 	      configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization")); // Permitir cabeçalhos necessários, incluindo Authorization
 	      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 	      source.registerCorsConfiguration("/**", configuration);
