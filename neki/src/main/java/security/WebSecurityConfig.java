@@ -59,17 +59,19 @@ public class WebSecurityConfig  {
 		return http.build();
 	}
 	
-	  @Bean
-	    CorsConfigurationSource corsConfigurationSource() {
-	        CorsConfiguration configuration = new CorsConfiguration();
-	        configuration.setAllowedOrigins(Arrays.asList("*"));
-	        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
-	        configuration.setAllowedHeaders(Arrays.asList("Content-Type")); 
-	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-	        source.registerCorsConfiguration("/**", configuration);
-	        return source;
-	    }
 	
+	  @Bean
+	  CorsConfigurationSource corsConfigurationSource() {
+	      CorsConfiguration configuration = new CorsConfiguration();
+	      configuration.setAllowedOrigins(Arrays.asList("*")); // Permitir origens de qualquer lugar (Isso pode ser ajustado para segurança mais rígida)
+	      configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT")); // Permitir métodos HTTP
+	      configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization")); // Permitir cabeçalhos necessários, incluindo Authorization
+	      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	      source.registerCorsConfiguration("/**", configuration);
+	      return source;
+	  }
+
+	  
 	@Bean
 	public AuthTokenFilter authenticationJwtTokenFilter() {
 		return new AuthTokenFilter();
