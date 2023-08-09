@@ -46,10 +46,13 @@ public class WebSecurityConfig  {
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //define a politica de sessao
             //Essas linhas que definimos quais rotas serão publicas e quais privadas
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**" ,"/roles", "/signin**").permitAll()
+                .requestMatchers("/auth/**" ,"/roles", "/signin**" , "/swagger-ui/**",
+                        "/swagger-resources/*",
+                        "/v3/api-docs/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/skill/**", "/funcionarios/**",  "/funcionarios/*/skills/" ).hasAnyRole("ADM", "USER")
             .requestMatchers(HttpMethod.POST, "/funcionarios/*/skills/associar-skills**","/skill"  ).hasAnyRole("ADM", "USER")
             .requestMatchers(HttpMethod.DELETE, "/funcionarios/*/skills/excluir**" ).hasAnyRole("ADM", "USER")
+            
             .anyRequest().authenticated())
             ;		
 		
